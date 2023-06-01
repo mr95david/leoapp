@@ -11,29 +11,13 @@ function App() {
   const [dataAnos, setDataAnos] = useState([])
   const [dataTipos, setDataTipos] = useState([])
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const options = {
-      day: '2-digit',
-      month: '2-digit',
-      year: '2-digit',
-    };
-    return date.toLocaleDateString('en-GB', options);
-  };
 
   const fetchData = async () => {
     try {
       const response = await fetch(url);
       const jsonData = await response.json();
 
-      const modifiedData = jsonData.map((item) => {
-        return {
-          ...item,
-          FechaPublicacion: formatDate(item.FechaPublicacion),
-        };
-      });
-
-      setData(modifiedData);
+      setData(jsonData);
 
       //setData(jsonData);
     } catch (error) {
@@ -45,7 +29,6 @@ function App() {
     try {
       const response = await fetch(url_argupAno);
       const jsonData = await response.json();
-      //console.log(jsonData)
       setDataAnos(jsonData);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -96,7 +79,7 @@ function App() {
         accessor: "AnoPublicacion",
       },
       {
-        Header: "Fecha de Publicación (Dia/Mes/Año)",
+        Header: "Fecha de Publicación (Año/Mes/Dia)",
         accessor: "FechaPublicacion",
       },
     ],
