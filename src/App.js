@@ -65,7 +65,7 @@ function App() {
 
   useEffect(() => {
     fetchData()
-  }, []);
+  });
 
   useEffect(() => {
     fetchData_Anos()
