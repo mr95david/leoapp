@@ -6,19 +6,35 @@ const url = 'https://leoapi-1-h8605638.deta.app/documents'
 const url_argupAno = 'https://leoapi-1-h8605638.deta.app/documents/agrupar/ano'
 const url_argupTipo = 'https://leoapi-1-h8605638.deta.app/documents/agrupar/tipo'
 
+function formatDate(date) {
+  // Format the date to 'dd/mm/yy'
+  const formattedDate = new Date(date).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: '2-digit',
+  });
+
+  return formattedDate;
+}
+
 function App() {
   const [data, setData] = useState([]);
   const [dataAnos, setDataAnos] = useState([])
   const [dataTipos, setDataTipos] = useState([])
 
-
   const fetchData = async () => {
     try {
       const response = await fetch(url);
       const jsonData = await response.json();
+      const modify = jsonData.map(item => {
+          const modifiedItem = { 
+            ...item, 
+            FechaPublicacion: formatDate(item.FechaPublicacion
+          )};
 
-      setData(jsonData);
-
+        return modifiedItem;
+      })
+      setData(modify);
       //setData(jsonData);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -93,7 +109,7 @@ function App() {
           <h1 className="text-2xl font-bold">LEO-APP: BigData Universidad Central 2023</h1>
           <div className="mt-4">
             <h8 className="text-xl font-semibold">Actualmente la distribucion de sentencias por año de publicación es: </h8>
-            <ul class="list-inside list-disc">
+            <ul className="list-inside list-disc">
               {dataAnos.map((item) => (
                 <li key={item._id} className='text-base font-semibold'>
                   La cantidad de sentencias publicadas en {item._id}, es de {item.count}.
